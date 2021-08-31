@@ -1,6 +1,7 @@
 #ISIS1225 - Librerias de soporte
 
 1- Jeronimo Vargas Rendon, 202113305, j.vargar2@uniandes.edu.co
+
 2- Maicol Rincon, , m.antonio@uniandes.edu.co
 
 
