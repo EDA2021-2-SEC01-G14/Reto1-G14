@@ -37,7 +37,7 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog():
+def newCatalog(option):
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
     todos los libros, adicionalmente, crea una lista vacia para los autores,
@@ -47,14 +47,24 @@ def newCatalog():
     catalog = {'Artists': None,
                'Artworks': None}
 
-    catalog['Artists'] = lt.newList()
-    catalog['Artworks'] = lt.newList('ARRAY_LIST')
+    if option == 1:
+        catalog['Artists'] = lt.newList()
+        catalog['Artworks'] = lt.newList('ARRAY_LIST')
+    
+    elif option == 2:
+        catalog['Artists'] = lt.newList()
+        catalog['Artworks'] = lt.newList('LINKED_LIST')
    
-
     return catalog
 
 
 # Funciones para agregar informacion al catalogo
+
+def addArtist(catalog, artist):
+    lt.addLast(catalog["Artists"], artist)
+
+def addArtwork(catalog, artwork):
+    lt.addLast(catalog["Artworks"], artwork)
 
 # Funciones para creacion de datos
 

@@ -54,7 +54,17 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        print("1. ARRAY lIST")
+        print("2. LINKED LIST")
+        option = int(input("Digite el número de la opción en que desea cargar los datos: "))
         print("Cargando información de los archivos ....")
+
+        catalog=controller.initCatalog(option)
+        controller.loadData(catalog)
+        
+
+
+
 
     elif int(inputs[0]) == 2:
         pass
