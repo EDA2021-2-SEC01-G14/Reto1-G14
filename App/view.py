@@ -26,7 +26,6 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 
-
 """
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
@@ -35,9 +34,15 @@ operación solicitada
 """
 
 def printMenu():
+
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Listar cronológicamente los artistas")
+    print("3- Listar cronológicamente las adquisiciones ")
+    print("4- Clasificar las obras de un artista por técnica")
+    print("5- Clasificar las obras por la nacionalidad de sus creadores")
+    print("6- Costostransportar obras de un departamento")
+    print("7- Proponer una nueva exposición en el museo")
 
 catalog = None
 
@@ -48,11 +53,36 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        print("1. ARRAY lIST")
+        print("2. LINKED LIST")
+        option = int(input("Digite el número de la opción en que desea cargar los datos: "))
         print("Cargando información de los archivos ....")
+
+        catalog=controller.initCatalog(option)
+        controller.loadData(catalog)
+        
+
+
 
     elif int(inputs[0]) == 2:
         pass
 
+    elif int(inputs[0]) == 3:
+        pass
+
+    elif int(inputs[0]) == 4:
+        pass
+
+    elif int(inputs[0]) == 5:
+        pass
+
+    elif int(inputs[0]) == 6:
+        pass
+
+    elif int(inputs[0]) == 7:
+        pass
+
     else:
         sys.exit(0)
+
 sys.exit(0)

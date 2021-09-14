@@ -24,7 +24,6 @@
  * Dario Correal - Version inicial
  """
 
-
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
@@ -37,7 +36,33 @@ los mismos.
 
 # Construccion de modelos
 
+def newCatalog(option):
+    """
+    Inicializa el catálogo de libros. Crea una lista vacia para guardar
+    todos los libros, adicionalmente, crea una lista vacia para los autores,
+    una lista vacia para los generos y una lista vacia para la asociación
+    generos y libros. Retorna el catalogo inicializado.
+    """
+    catalog = {'Artists': None,
+               'Artworks': None}
+
+    if option == 1:
+        catalog['Artists'] = lt.newList()
+        catalog['Artworks'] = lt.newList('ARRAY_LIST')
+    
+    elif option == 2:
+        catalog['Artists'] = lt.newList()
+        catalog['Artworks'] = lt.newList('LINKED_LIST')
+   
+    return catalog
+
 # Funciones para agregar informacion al catalogo
+
+def addArtist(catalog, artist):
+    lt.addLast(catalog["Artists"], artist)
+
+def addArtwork(catalog, artwork):
+    lt.addLast(catalog["Artworks"], artwork)
 
 # Funciones para creacion de datos
 
