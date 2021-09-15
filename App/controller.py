@@ -56,5 +56,10 @@ def loadAdworks(catalog):
     
 # Funciones de ordenamiento
 
+def sortartworks(catalog,size,option):
+
+    model.sortartworks()
+    return
+
 # Funciones de consulta sobre el catálogo
 

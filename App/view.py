@@ -65,6 +65,15 @@ while True:
 
 
     elif int(inputs[0]) == 2:
+        size=input('Ingresa el tamaño de la muestra:')
+        
+        print("1. Insertion")
+        print("2. Shellsort")
+        print("1. Mergesort")
+        print("2. QuickSort")
+        option=input('Ingrese que tipo de ordenamiento quiere utilizar')
+
+        controller.sortartworks(catalog,size,option)
         pass
 
     elif int(inputs[0]) == 3:

@@ -25,8 +25,14 @@
  """
 
 import config as cf
+import datetime as DT
+import time
+
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import insertionsort as ins
+from DISClib.Algorithms.Sorting import mergesort as mer
+from DISClib.Algorithms.Sorting import quicksort as qui
 assert cf
 
 """
@@ -47,12 +53,12 @@ def newCatalog(option):
                'Artworks': None}
 
     if option == 1:
-        catalog['Artists'] = lt.newList()
+        catalog['Artists'] = lt.newList('ARRAY_LIST')
         catalog['Artworks'] = lt.newList('ARRAY_LIST')
     
     elif option == 2:
         catalog['Artists'] = lt.newList()
-        catalog['Artworks'] = lt.newList('LINKED_LIST')
+        catalog['Artworks'] = lt.newList()
    
     return catalog
 
@@ -70,4 +76,47 @@ def addArtwork(catalog, artwork):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+
+    a1=artwork1['DateAcquired'].split('-')
+    date1=DT.data(int(a1[0]),int(a1[1]),int(a1[2]))
+
+    a2=artwork1['DateAcquired'].split('-')
+    date2=DT.data(int(a2[0]),int(a2[1]),int(a2[2]))
+    
+    rta=False
+    if date1 < date2:
+        return True
+
+    return rta 
+    '''
+    artwork2_date=artwork2['DateAcquired']
+    date2=DT.datetime.strptime(artwork2_date, '%Y-%m-%d').date
+    
+    
+    Devuelve verdadero (True) si el 'DateAcquired' de artwork1 es menores que el de artwork2
+    Args:
+    artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
+    artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
+    '''
+
+
 # Funciones de ordenamiento
+
+def sortartworks(catalog, size):
+
+    if len(catalog["Artworks"]) < size:
+        return 'La muestra es mas grande que los datos cargados'
+    
+    else:
+
+        sub_list = lt.subList(catalog["Artworks"], 1, size)
+        sub_list = sub_list.copy()
+        start_time = time.process_time()
+        sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
+        stop_time = time.process_time()
+
+
+
+
+
