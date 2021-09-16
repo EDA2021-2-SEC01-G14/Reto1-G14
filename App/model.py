@@ -26,8 +26,15 @@
 
 
 import config as cf
+import time
+import sys
+default_limit=1000
+sys.setrecursionlimit(default_limit*10)
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import insertionsort as it
+from DISClib.Algorithms.Sorting import mergesort as mg
+from DISClib.Algorithms.Sorting import quicksort as qs
 assert cf
 
 """
@@ -50,10 +57,14 @@ def newCatalog(option):
     if option == 1:
         catalog['Artists'] = lt.newList()
         catalog['Artworks'] = lt.newList('ARRAY_LIST')
+        catalog["BeginDate"] = lt.newList("ARRAY_LIST")
+        catalog["EndDate"] = lt.newList("ARRAY_LIST")
     
     elif option == 2:
         catalog['Artists'] = lt.newList()
         catalog['Artworks'] = lt.newList('LINKED_LIST')
+        catalog["BeginDate"] = lt.newList("LINKED_LIST")
+        catalog["EndDate"] = lt.newList("LINKED_LIST")
    
     return catalog
 
@@ -62,14 +73,98 @@ def newCatalog(option):
 
 def addArtist(catalog, artist):
     lt.addLast(catalog["Artists"], artist)
+    BeginDate=artist["BeginDate"]
+    lt.addLast(catalog["BeginDate"],BeginDate)
+    EndDate = artist["EndDate"]
+    lt.addLast(catalog["EndDate"], EndDate)
 
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["Artworks"], artwork)
 
+
 # Funciones para creacion de datos
+
+
+    
 
 # Funciones de consulta
 
+def getArtworksbyDate(catalog, min, max, tamaño, op):
+
+    start = time.process_time_ns()
+    
+    list2 = lt.subList(catalog["Artworks"], 1 , tamaño)
+    list2 = list2.copy()
+    b=lt.newList("ARRAY_LIST")
+    
+
+    for byDate in list2["elements"]:
+
+        if byDate["DateAcquired"] != "":
+        
+            date = int(byDate["DateAcquired"].replace("-",""))
+
+            if date >= min and date <= max:
+                lt.addLast(b, byDate)
+
+    
+    if op == 1:
+        it.sort(b, cmpArtworkByDateAcquired)
+    elif op == 2:
+        sa.sort(b, cmpArtworkByDateAcquired)
+    elif op == 3:
+        mg.sort(b, cmpArtworkByDateAcquired)
+    elif op == 4:
+        qs.sort(b, cmpArtworkByDateAcquired)
+
+    stop = time.process_time_ns()
+
+    sgs = (stop-start)/1000000000
+
+    return b, sgs
+
+    
+
+        
+
+def getYear(catalog, min, max):
+
+    a=lt.newList()
+    b=lt.newList()
+
+    for dateMin in catalog["BeginDate"]:
+        if dateMin >= min:
+            lt.addLast(a, dateMin)
+    
+    for dateMax in a:
+        if dateMax <= max:
+            lt.addLast(b,dateMax)
+        
+
+    return b
+
 # Funciones utilizadas para comparar elementos dentro de una lista
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+
+    if (artwork1["DateAcquired"]) < (artwork2["DateAcquired"]):
+        return True
+    else:
+        return False
 
 # Funciones de ordenamiento
+
+def ordering(op,catalog):
+
+    if op == 1:
+        it.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
+    elif op == 2:
+        sa.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
+    elif op == 3:
+        mg.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
+    elif op == 4:
+        qs.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
+
+
+
+
+
