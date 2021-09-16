@@ -87,22 +87,54 @@ def addArtwork(catalog, artwork):
 
 # Funciones de consulta
 
-def getArtworksbyDate(catalog, min, max, tamaño, op):
+def getArtworksbyDate(catalog, min, max, tamaño, op, option):
 
     start = time.process_time_ns()
     
     list2 = lt.subList(catalog["Artworks"], 1 , tamaño)
     list2 = list2.copy()
     b=lt.newList("ARRAY_LIST")
+
+    if option == 1:
     
-    for byDate in list2["elements"]:
+        for byDate in list2["elements"]:
 
-        if byDate["DateAcquired"] != "":
+            if byDate["DateAcquired"] != "":
+            
+                date = int(byDate["DateAcquired"].replace("-",""))
+
+                if date >= min and date <= max:
+                    lt.addLast(b, byDate)
+
+    else:
+
+        for i in range(1,(lt.size(list2))+1):
+
+            art=(lt.getElement(list2,i))
+            date=art["DateAcquired"]
+
+            if date != "":
+                
+                    date = int(date.replace('-',''))
+
+                    if date >= min and date <= max:
+                        lt.addLast(b, art)
         
-            date = int(byDate["DateAcquired"].replace("-",""))
+        '''print(list2)
+        for byDate in list2:
 
-            if date >= min and date <= max:
-                lt.addLast(b, byDate)
+            if byDate not in 'size type key cmpfunction':
+                print(byDate)
+                print(list2[byDate]['info']["DateAcquired"])
+                date=(list2[byDate]['info']["DateAcquired"])
+
+                if date != "":
+                
+                    date = int(date.replace('-',''))
+
+                    if date >= min and date <= max:
+                        lt.addLast(b, date)'''
+        
 
     
     if op == 1:
@@ -118,6 +150,7 @@ def getArtworksbyDate(catalog, min, max, tamaño, op):
 
     sgs = (stop-start)/1000000000
 
+    
     return b, sgs
 
     

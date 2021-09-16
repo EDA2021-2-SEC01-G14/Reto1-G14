@@ -98,7 +98,7 @@ while True:
         min = int(input("Fecha Inicial: ").replace("-",""))
         max = int(input("Fecha Final: ").replace("-",""))
 
-        gd = controller.getArtworksbyDate(catalog, min, max, tamaño,op)
+        gd = controller.getArtworksbyDate(catalog, min, max, tamaño,op,option)
 
         printOP3(gd, min, max, tamaño)
 

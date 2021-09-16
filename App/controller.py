@@ -49,7 +49,7 @@ def loadArtist(catalog):
 
 
 def loadAdworks(catalog):
-    artworks_file = cf.data_dir + "Artworks-utf8-small.csv"
+    artworks_file = cf.data_dir + "Artworks-utf8-10pct.csv"
     input_file2 = csv.DictReader(open(artworks_file, encoding="utf-8"))
 
     for artwork in input_file2:
@@ -65,8 +65,8 @@ def ordering(op, catalog):
 
 # Funciones de consulta sobre el catálogo
 
-def getArtworksbyDate(catalog, min, max, tamaño, op):
-    return model.getArtworksbyDate(catalog, min, max, tamaño, op)
+def getArtworksbyDate(catalog, min, max, tamaño, op, option):
+    return model.getArtworksbyDate(catalog, min, max, tamaño, op, option)
 
 
 def getYear(catalog, min, max):
