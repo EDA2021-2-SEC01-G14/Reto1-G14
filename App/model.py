@@ -148,7 +148,7 @@ def getArtworksbyDate(catalog, min, max, tamaño, op, option):
 
     stop = time.process_time_ns()
 
-    sgs = (stop-start)/1000000000
+    sgs = (stop-start)/1000000
 
     
     return b, sgs

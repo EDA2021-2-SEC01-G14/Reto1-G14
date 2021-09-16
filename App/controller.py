@@ -41,7 +41,7 @@ def loadData(catalog):
     loadAdworks(catalog)
 
 def loadArtist(catalog):
-    artists_file = cf.data_dir + "Artists-utf8-10pct.csv"
+    artists_file = cf.data_dir + "Artists-utf8-50pct.csv"
     input_file = csv.DictReader(open(artists_file, encoding="utf-8"))
 
     for artist in input_file:
@@ -49,7 +49,7 @@ def loadArtist(catalog):
 
 
 def loadAdworks(catalog):
-    artworks_file = cf.data_dir + "Artworks-utf8-10pct.csv"
+    artworks_file = cf.data_dir + "Artworks-utf8-50pct.csv"
     input_file2 = csv.DictReader(open(artworks_file, encoding="utf-8"))
 
     for artwork in input_file2:
