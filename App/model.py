@@ -61,9 +61,9 @@ def newCatalog(option):
     
     elif option == 2:
         catalog['Artists'] = lt.newList()
-        catalog['Artworks'] = lt.newList('LINKED_LIST')
-        catalog["BeginDate"] = lt.newList("LINKED_LIST")
-        catalog["EndDate"] = lt.newList("LINKED_LIST")
+        catalog['Artworks'] = lt.newList()
+        catalog["BeginDate"] = lt.newList()
+        catalog["EndDate"] = lt.newList()
    
     return catalog
 
@@ -95,7 +95,6 @@ def getArtworksbyDate(catalog, min, max, tamaño, op):
     list2 = list2.copy()
     b=lt.newList("ARRAY_LIST")
     
-
     for byDate in list2["elements"]:
 
         if byDate["DateAcquired"] != "":
