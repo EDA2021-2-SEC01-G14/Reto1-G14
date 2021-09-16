@@ -2,7 +2,7 @@
 
 1- Jeronimo Vargas Rendon, 202113305, j.vargar2@uniandes.edu.co
 
-2- Maicol Rincon, , m.antonio@uniandes.edu.co
+2- Maicol Antonio Rincon,202027329 , m.antonio@uniandes.edu.co
 
 Este proyecto contiene los Tipos abstractos de datos, estructuras de datos y algoritmos requeridos por el curso ISIS1225-Estructuras de Datos y Algoritmos
 
