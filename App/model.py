@@ -43,7 +43,7 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog(option):
+def newCatalog():
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
     todos los libros, adicionalmente, crea una lista vacia para los autores,
@@ -53,17 +53,9 @@ def newCatalog(option):
     catalog = {'Artists': None,
                'Artworks': None}
 
-    if option == 1:
-        catalog['Artists'] = lt.newList()
-        catalog['Artworks'] = lt.newList('ARRAY_LIST')
-        catalog["BeginDate"] = lt.newList("ARRAY_LIST")
-        catalog["EndDate"] = lt.newList("ARRAY_LIST")
     
-    elif option == 2:
-        catalog['Artists'] = lt.newList()
-        catalog['Artworks'] = lt.newList()
-        catalog["BeginDate"] = lt.newList()
-        catalog["EndDate"] = lt.newList()
+    catalog['Artists'] = lt.newList('ARRAY_LIST')
+    catalog['Artworks'] = lt.newList('ARRAY_LIST')
    
     return catalog
 
@@ -72,10 +64,6 @@ def newCatalog(option):
 
 def addArtist(catalog, artist):
     lt.addLast(catalog["Artists"], artist)
-    BeginDate=artist["BeginDate"]
-    lt.addLast(catalog["BeginDate"],BeginDate)
-    EndDate = artist["EndDate"]
-    lt.addLast(catalog["EndDate"], EndDate)
 
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["Artworks"], artwork)
@@ -87,71 +75,36 @@ def addArtwork(catalog, artwork):
 
 # Funciones de consulta
 
-def getArtworksbyDate(catalog, min, max, tamaño, op, option):
+def getArtworksbyDate(catalog, min, max):
 
-    start = time.process_time_ns()
-    
-    list2 = lt.subList(catalog["Artworks"], 1 , tamaño)
-    list2 = list2.copy()
-    b=lt.newList("ARRAY_LIST")
+    a= catalog["Artworks"]
+    resultArtwoks = lt.newList('ARRAY_LIST')
 
-    if option == 1:
-    
-        for byDate in list2["elements"]:
-
-            if byDate["DateAcquired"] != "":
+    for byDate in a["elements"]:
+        if byDate["DateAcquired"]!= "":
+            date = int(byDate["DateAcquired"].replace("-",""))
             
-                date = int(byDate["DateAcquired"].replace("-",""))
+            if date >= min and date<= max:
+                lt.addLast(resultArtwoks, byDate)
 
-                if date >= min and date <= max:
-                    lt.addLast(b, byDate)
-
-    else:
-
-        for i in range(1,(lt.size(list2))+1):
-
-            art=(lt.getElement(list2,i))
-            date=art["DateAcquired"]
-
-            if date != "":
-                
-                    date = int(date.replace('-',''))
-
-                    if date >= min and date <= max:
-                        lt.addLast(b, art)
-        
-        '''print(list2)
-        for byDate in list2:
-
-            if byDate not in 'size type key cmpfunction':
-                print(byDate)
-                print(list2[byDate]['info']["DateAcquired"])
-                date=(list2[byDate]['info']["DateAcquired"])
-
-                if date != "":
-                
-                    date = int(date.replace('-',''))
-
-                    if date >= min and date <= max:
-                        lt.addLast(b, date)'''
-        
-
+    mg.sort(resultArtwoks,cmpArtworkByDateAcquired)
     
-    if op == 1:
-        it.sort(b, cmpArtworkByDateAcquired)
-    elif op == 2:
-        sa.sort(b, cmpArtworkByDateAcquired)
-    elif op == 3:
-        mg.sort(b, cmpArtworkByDateAcquired)
-    elif op == 4:
-        qs.sort(b, cmpArtworkByDateAcquired)
+    return resultArtwoks
 
-    stop = time.process_time_ns()
+def purchase(gd):
 
-    sgs = (stop-start)/1000000
+    count=0
+    a=gd["elements"]
 
+    for purch in a:
+        
+        b= purch["CreditLine"]
     
-    return b, sgs
+        if "purchase" in b.lower():
+            count += 1
+
+    return count
+    
 
     
 
@@ -183,18 +136,9 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
 
 # Funciones de ordenamiento
 
-def ordering(op,catalog):
-
-    if op == 1:
-        it.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
-    elif op == 2:
-        sa.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
-    elif op == 3:
-        mg.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
-    elif op == 4:
-        qs.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
 
 
 
+                     
 
 

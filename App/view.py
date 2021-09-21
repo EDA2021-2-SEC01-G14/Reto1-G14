@@ -25,6 +25,7 @@ import config as cf
 import sys
 default_limit=1000
 sys.setrecursionlimit(default_limit*10)
+
 import controller
 from DISClib.ADT import list as lt
 assert cf
@@ -40,24 +41,50 @@ def printMenu():
 
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Algoritmos de Ordenamiento")
+    print("2- Listar cronológicamente los artistas")
     print("3- Listar cronológicamente las adquisiciones ")
-    print("4- Listar cronológicamente los artistas")
-    print("5- Clasificar las obras de un artista por técnica")
-    print("6- Clasificar las obras por la nacionalidad de sus creadores")
-    print("7- Costostransportar obras de un departamento")
-    print("8- Proponer una nueva exposición en el museo")
+    print("4- Clasificar las obras de un artista por técnica")
+    print("5- Clasificar las obras por la nacionalidad de sus creadores")
+    print("6- Costostransportar obras de un departamento")
+    print("7- Proponer una nueva exposición en el museo")
 
 catalog = None
 
 
-def printOP3(gd, min, max, tamaño):
+def print_3(gd):
+    tamaño=lt.size(gd)
+    print("Número total de obras: " + str(tamaño))
+    purchase= controller.purchase(gd)
+    print("Obras compradas: " + str(purchase))
+    print("Primeras 3 obras: ")
+    print("ObjectID: " + str(gd["elements"][0]["ObjectID"]) + ", Título: " + str(gd["elements"][0]['Title'])
+    + ", Fecha: " + str(gd["elements"][0]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][0]['Medium']) + ", Dimensiones: " + str(gd["elements"][0]['Dimensions']))
 
-    print("Las obras encontradas entre " + str(min) + " hasta " + str(max) + " con una muestra de " + str(tamaño) + " son:")
-    a = gd[0]
-    print("Número total de obras: " + str(len(a["elements"])))
+    print("\nObjectID: " + str(gd["elements"][1]["ObjectID"]) + ", Título: " + str(gd["elements"][1]['Title'])
+    + ", Fecha: " + str(gd["elements"][1]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][1]['Medium']) + ", Dimensiones: " + str(gd["elements"][1]['Dimensions']))
 
-    print("Tiempo: "+ str( gd[1]))
+    print("\nObjectID: " + str(gd["elements"][2]["ObjectID"]) + ", Título: " + str(gd["elements"][2]['Title'])
+    + ", Fecha: " + str(gd["elements"][2]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][2]['Medium']) + ", Dimensiones: " + str(gd["elements"][2]['Dimensions']))
+
+    print("\nÚltimas 3 obras: ")
+
+    print("\nObjectID: " + str(gd["elements"][tamaño-3]["ObjectID"]) + ", Título: " + str(gd["elements"][tamaño-3]['Title'])
+    + ", Fecha: " + str(gd["elements"][tamaño-3]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][tamaño-3]['Medium']) + ", Dimensiones: " + str(gd["elements"][tamaño-3]['Dimensions']))
+
+    print("\nObjectID: " + str(gd["elements"][tamaño-2]["ObjectID"]) + ", Título: " + str(gd["elements"][tamaño-2]['Title'])
+    + ", Fecha: " + str(gd["elements"][tamaño-2]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][tamaño-2]['Medium']) + ", Dimensiones: " + str(gd["elements"][tamaño-2]['Dimensions']))
+
+    print("\nObjectID: " + str(gd["elements"][tamaño-1]["ObjectID"]) + ", Título: " + str(gd["elements"][tamaño-1]['Title'])
+    + ", Fecha: " + str(gd["elements"][tamaño-1]['DateAcquired'])
+    + ", Medio: " +str(gd["elements"][tamaño-1]['Medium']) + ", Dimensiones: " + str(gd["elements"][tamaño-1]['Dimensions']))
+
+    
+
 
     
 
@@ -68,12 +95,10 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("1. ARRAY lIST")
-        print("2. LINKED LIST")
-        option = int(input("Digite el número de la opción en que desea cargar los datos: "))
+       
         print("Cargando información de los archivos ....")
 
-        catalog = controller.initCatalog(option)
+        catalog = controller.initCatalog()
         controller.loadData(catalog)
         
         print("\nArtistas cargadas: " + str(lt.size(catalog["Artists"])))
@@ -93,14 +118,15 @@ while True:
 
     elif int(inputs[0]) == 3:
 
-        tamaño = int(input("Digite el tamaño de la muestra: "))
         print("Digite el rango de fechas en el que desea realizar la búsqueda (AAAA-MM-DD)")
         min = int(input("Fecha Inicial: ").replace("-",""))
         max = int(input("Fecha Final: ").replace("-",""))
 
-        gd = controller.getArtworksbyDate(catalog, min, max, tamaño,op,option)
+        gd = controller.getArtworksbyDate(catalog, min, max)
 
-        printOP3(gd, min, max, tamaño)
+        print_3(gd)
+
+        
 
     elif int(inputs[0]) == 4:
         print("Digite el rango de fechas que desea realizar la busqueda (AAAA-MM-DD)")
