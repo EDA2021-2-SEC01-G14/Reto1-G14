@@ -24,6 +24,7 @@
  * Dario Correal - Version inicial
  """
 
+from DISClib.DataStructures.arraylist import newList
 import config as cf
 import time
 import sys
@@ -105,31 +106,58 @@ def purchase(gd):
 
     return count
     
+def top10byNacionality(catalog):
 
+    i=0
+    tamaño=lt.size(catalog["Artworks"])
+    top10=lt.newList("ARRAY_LIST")
+
+    while i < tamaño:
+        b=[]
+        b.append(catalog["Artists"]["elements"][i])
+        b.append(catalog["Artworks"]["elements"][i])
+        lt.addLast(top10,b)
+        i+=1
+
+    a=0
+    dicc={}
+    while a < tamaño:
+        
+        if top10["elements"][a][0]['Nationality'] != "":
+            if top10["elements"][a][0]['Nationality'] in dicc.keys():
+                x= dicc[top10["elements"][a][0]['Nationality']]
+                x+=1
+                dicc[top10["elements"][a][0]['Nationality']]=x
+            else:
+                dicc[top10["elements"][a][0]['Nationality']]=1
+        a+=1
+    count=0
+    mayor=""
+    for y in dicc.keys():
+        if dicc[y]> count:
+            mayor= y
+            count=dicc[y]
+    
+    o=lt.newList("ARRAY_LIST")
+    lt.addLast(o,dicc)
+    mg.sort(o,cmpO)
     
 
-        
-
-def getYear(catalog, min, max):
-
-    a=lt.newList()
-    b=lt.newList()
-
-    for dateMin in catalog["BeginDate"]:
-        if dateMin >= min:
-            lt.addLast(a, dateMin)
+    return mayor,o,top10
     
-    for dateMax in a:
-        if dateMax <= max:
-            lt.addLast(b,dateMax)
-        
-
-    return b
+    
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpArtworkByDateAcquired(artwork1, artwork2):
 
     if (artwork1["DateAcquired"]) < (artwork2["DateAcquired"]):
+        return True
+    else:
+        return False
+
+def cmpO(a,b):
+    print(a)
+    if a.values() < b.values():
         return True
     else:
         return False

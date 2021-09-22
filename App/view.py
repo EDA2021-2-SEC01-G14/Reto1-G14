@@ -84,7 +84,23 @@ def print_3(gd):
     + ", Medio: " +str(gd["elements"][tamaño-1]['Medium']) + ", Dimensiones: " + str(gd["elements"][tamaño-1]['Dimensions']))
 
     
+def print_5(top):
 
+    print("Top 10 Nacionalidades con mayor numero de obras: ")
+    print(top[1]["elements"])
+    print("\nObras de la nacionalidad con el más número de obras: ")
+    tamaño=lt.size(top[2])
+    lista=top[2]
+
+    i=0
+    print(top[0])
+    while i < tamaño:
+        if lista["elements"][i][0]["Nationality"]==top[0]:
+            print("\nTitulo: " + str(lista["elements"][i][1]["Title"]) + " Artista: " + str(lista["elements"][i][0]["DisplayName"])
+            + " Fecha de la obra: " + str(lista["elements"][i][1]["DateAcquired"]) + " Medio: " 
+            +str(lista["elements"][i][1]["Medium"])+ " Dimensiones: " + str(lista["elements"][i][1]["Dimensions"]))
+        i+=1
+    
 
     
 
@@ -129,19 +145,13 @@ while True:
         
 
     elif int(inputs[0]) == 4:
-        print("Digite el rango de fechas que desea realizar la busqueda (AAAA-MM-DD)")
-        min = input("Año Inicial: ")
-        max = input("Año Final: ")
-        
-        result= controller.getYear(catalog, min, max)
-
-    
-
-    elif int(inputs[0]) == 0:
         pass
+
 
     elif int(inputs[0]) == 5:
-        pass
+        
+        top = controller.top10byNacionality(catalog)
+        print_5(top)
 
     elif int(inputs[0]) == 6:
         pass

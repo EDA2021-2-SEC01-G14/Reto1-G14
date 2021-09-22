@@ -73,3 +73,7 @@ def getArtworksbyDate(catalog, min, max,):
 def purchase(gd):
 
     return model.purchase(gd)
+
+def top10byNacionality(catalog):
+     
+    return model.top10byNacionality(catalog)
