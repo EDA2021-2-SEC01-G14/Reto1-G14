@@ -47,14 +47,12 @@ def loadArtist(catalog):
     for artist in input_file:
         model.addArtist(catalog, artist)
 
-
 def loadAdworks(catalog):
     artworks_file = cf.data_dir + "Artworks-utf8-50pct.csv"
     input_file2 = csv.DictReader(open(artworks_file, encoding="utf-8"))
 
     for artwork in input_file2:
         model.addArtwork(catalog,artwork)
-
 
     
 # Funciones de ordenamiento
@@ -68,6 +66,11 @@ def ordering(op, catalog):
 def getArtworksbyDate(catalog, min, max, tamaño, op, option):
     return model.getArtworksbyDate(catalog, min, max, tamaño, op, option)
 
+def getArtistBeginDate(catalog, min, max,):
+    return model.getArtistBeginDate(catalog, min, max,)
+
+def ArtworksbyArtist(catalog,ArtistName): 
+    return model.ArtworksbyArtist(catalog,ArtistName)
 
 def getYear(catalog, min, max):
 

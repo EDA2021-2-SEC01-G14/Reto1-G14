@@ -50,7 +50,6 @@ def printMenu():
 
 catalog = None
 
-
 def printOP3(gd, min, max, tamaño):
 
     print("Las obras encontradas entre " + str(min) + " hasta " + str(max) + " con una muestra de " + str(tamaño) + " son:")
@@ -58,6 +57,28 @@ def printOP3(gd, min, max, tamaño):
     print("Número total de obras: " + str(len(a["elements"])))
 
     print("Tiempo: "+ str( gd[1]))
+
+def printArtistBegindate(list):
+    
+    print('El numero total de artistas en aquel rango es de: ', lt.size(list[0]))
+
+    for i in range(1,len(list)):
+        print(list[i])
+    
+def printArtworsMediums(list): 
+
+    if list == 0:
+        print('\nNo tiene obras')
+    else:
+        print('\nEl artista tiene',list[0], 'obras') 
+
+        print('Se usan', len(list[1]), 'técnicas en total')
+        print('La técnica mas utilizad es: ', list[2])
+
+        for a in list[3]['elements']:
+            print('\nTitulo: '+a['Title'], 'Fecha de la obra: '+a['Date'], 'Tecnica o Medio: '+a['Medium'],'Diemensiones: '+ a['Dimensions'] )
+
+ 
 
     
 
@@ -103,19 +124,20 @@ while True:
         printOP3(gd, min, max, tamaño)
 
     elif int(inputs[0]) == 4:
-        print("Digite el rango de fechas que desea realizar la busqueda (AAAA-MM-DD)")
-        min = input("Año Inicial: ")
-        max = input("Año Final: ")
-        
-        result= controller.getYear(catalog, min, max)
-
+        print("Digite el rango de fechas en el que desea realizar la búsqueda (AAAA)")
+        min = int(input("Fecha Inicial: "))
+        max = int(input("Fecha Final: "))
+         
+        list=controller.getArtistBeginDate(catalog,min,max)
+        printArtistBegindate(list)
     
 
-    elif int(inputs[0]) == 0:
-        pass
-
     elif int(inputs[0]) == 5:
-        pass
+        Name=input("El nombre del artista que desea buscar: ")
+        
+        list=controller.ArtworksbyArtist(catalog,Name)
+        printArtworsMediums(list)
+
 
     elif int(inputs[0]) == 6:
         pass

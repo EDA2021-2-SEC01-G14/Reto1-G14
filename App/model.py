@@ -54,7 +54,7 @@ def newCatalog(option):
                'Artworks': None}
 
     if option == 1:
-        catalog['Artists'] = lt.newList()
+        catalog['Artists'] = lt.newList('ARRAY_LIST')
         catalog['Artworks'] = lt.newList('ARRAY_LIST')
         catalog["BeginDate"] = lt.newList("ARRAY_LIST")
         catalog["EndDate"] = lt.newList("ARRAY_LIST")
@@ -66,7 +66,6 @@ def newCatalog(option):
         catalog["EndDate"] = lt.newList()
    
     return catalog
-
 
 # Funciones para agregar informacion al catalogo
 
@@ -81,7 +80,6 @@ def addArtwork(catalog, artwork):
     lt.addLast(catalog["Artworks"], artwork)
 
 # Funciones para creacion de datos
-
 
     
 
@@ -153,7 +151,108 @@ def getArtworksbyDate(catalog, min, max, tamaño, op, option):
     
     return b, sgs
 
+def getArtistBeginDate(catalog, min, max,):
+
+    list= catalog['Artists'].copy()
+    a=lt.newList("ARRAY_LIST")
     
+    for artist in list['elements']:
+        
+        date= int(artist['BeginDate'].replace('-',''))
+        
+        if date >= min and date <= max:
+            lt.addLast(a,artist)
+
+    mg.sort(a, cmpArtistBegindate)
+
+
+    a1= lt.getElement(a,1)
+    a1= 'Nombre: '+ a1['DisplayName'] ,'Año de Nacimiento: '+ a1['BeginDate'],'Genero: '+ a1['Gender'], 'Nacionalidad: '+ a1['Nationality']
+    a2= lt.getElement(a,2)
+    a2= 'Nombre: '+ a2['DisplayName'], 'Año de Nacimiento: '+a2['BeginDate'],'Genero: '+ a2['Gender'], 'Nacionalidad: '+ a2['Nationality']
+    a3= lt.getElement(a,3)
+    a3= 'Nombre: '+a3['DisplayName'], 'Año de Nacimiento: '+a3['BeginDate'],'Genero: '+ a3['Gender'], 'Nacionalidad: '+a3['Nationality']
+    a4= lt.getElement(a,(lt.size(a) - 2))
+    a4= 'Nombre: '+a4['DisplayName'], 'Año de Nacimiento: '+a4['BeginDate'],'Genero: '+ a4['Gender'], 'Nacionalidad: '+ a4['Nationality']
+    a5= lt.getElement(a,(lt.size(a) - 1))
+    a5= 'Nombre: '+a5['DisplayName'], 'Año de Nacimiento: '+a5['BeginDate'],'Genero: '+ a5['Gender'], 'Nacionalidad: '+ a5['Nationality']
+    a6= lt.getElement(a,lt.size(a))
+    a6= 'Nombre: '+a6['DisplayName'], 'Año de Nacimiento: '+a6['BeginDate'],'Genero: '+ a6['Gender'], 'Nacionalidad: '+ a6['Nationality']
+
+
+    return [a,a1,a2,a3,a4,a5,a6]
+
+    
+def ArtworksbyArtist(catalog,ArtistName):
+
+    listA = catalog['Artists'].copy()
+    ArtistID=''
+    x=True
+    pos=1
+    while x: 
+
+        artist= lt.getElement(listA,pos)
+        if ArtistName in artist['DisplayName']:
+            ArtistID= artist["ConstituentID"]
+            x=False
+
+        pos+=1
+
+    
+
+    listW = catalog['Artworks'].copy()
+    a=lt.newList("ARRAY_LIST")
+    
+    for artworks in listW['elements']:
+        
+        if ArtistID in artworks['ConstituentID']:
+            lt.addLast(a,artworks)
+
+
+    mg.sort(a,cmpArtworkMedium)
+
+    n_artworks = lt.size(a)
+
+    if n_artworks ==0: 
+        return 0
+    else:
+  
+        return [n_artworks] + ArtwroksMedium(a)
+
+
+def ArtwroksMedium(list):
+    
+
+    Mediums=[lt.getElement(list,1)['Medium']]
+    biggest=0
+    big_M =lt.getElement(list,1)['Medium']
+    count=0
+
+    for artwork in list['elements']:
+
+        if artwork['Medium'] in Mediums: 
+            count+=1
+
+        else: 
+            Mediums.append(artwork['Medium'])
+
+            if biggest > count:
+                biggest = count
+                big_M = artwork['Medium']
+
+    return [Mediums, big_M , Artwork_big_M(list,big_M)]
+
+def Artwork_big_M(list,big_M):
+
+    a=lt.newList("ARRAY_LIST")
+
+    for artwork in list['elements']:
+        if artwork['Medium'] == big_M:
+
+            lt.addLast(a,artwork)
+
+    return a
+
 
         
 
@@ -181,6 +280,21 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     else:
         return False
 
+def cmpArtistBegindate(artist1, artist2):
+
+    if (artist1["BeginDate"]) < (artist2["BeginDate"]):
+        return True
+    else:
+        return False
+
+def cmpArtworkMedium(artwork1, artwork2):
+    if (artwork1["Medium"]) < (artwork2["Medium"]):
+        return True
+    else:
+        return False
+
+
+
 # Funciones de ordenamiento
 
 def ordering(op,catalog):
@@ -193,8 +307,3 @@ def ordering(op,catalog):
         mg.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
     elif op == 4:
         qs.sort(catalog["Artworks"], cmpArtworkByDateAcquired)
-
-
-
-
-
