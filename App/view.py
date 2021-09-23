@@ -23,6 +23,7 @@
 from os import stat_result
 import config as cf
 import sys
+import time
 default_limit=1000
 sys.setrecursionlimit(default_limit*10)
 
@@ -91,19 +92,34 @@ def print_5(top):
     print("\nObras de la nacionalidad con el más número de obras: ")
     tamaño=lt.size(top[2])
     lista=top[2]
-
+    j=0
     i=0
     print(top[0])
-    while i < tamaño:
-        if lista["elements"][i][0]["Nationality"]==top[0]:
-            print("\nTitulo: " + str(lista["elements"][i][1]["Title"]) + " Artista: " + str(lista["elements"][i][0]["DisplayName"])
-            + " Fecha de la obra: " + str(lista["elements"][i][1]["DateAcquired"]) + " Medio: " 
-            +str(lista["elements"][i][1]["Medium"])+ " Dimensiones: " + str(lista["elements"][i][1]["Dimensions"]))
+    while j < tamaño:
+        if lista["elements"][j][0]["Nationality"]==top[0]:
+            while i <5:
+                print("\nTitulo: " + str(lista["elements"][i][1]["Title"]) + " Artista: " + str(lista["elements"][i][0]["DisplayName"])
+                + " Fecha de la obra: " + str(lista["elements"][i][1]["DateAcquired"]) + " Medio: " 
+                +str(lista["elements"][i][1]["Medium"])+ " Dimensiones: " + str(lista["elements"][i][1]["Dimensions"]))
+                i+=1
+        j+=1
+    
+def print_7(ar):
+    print("Número total de obras a exponer: " + str(lt.size(ar[0])))
+    print("Área utilizada: " + str(round((ar[1])/10000,2)))
+    print("Primeras 5 obras: ")
+    i=0
+    art=ar[0]["elements"]
+    while i<5 and i<lt.size(ar[0]):
+        print("Título: " + str(art[i]["Title"]) + ", Fecha: " + str(art[i]["Date"]) + ", Clasificación: " + str(art[i]["Classification"]) + ", Dimensiones: " + str(art[i]["Dimensions"]) + ", Medio: " + str(art[i]["Medium"]))
         i+=1
     
+    print("\nÚltimas 5 obras: ")
+    j=lt.size(ar[0])-6
 
-    
-
+    while j< lt.size(ar[0]):
+        print("Título: " + str(art[j]["Title"]) + ", Fecha: " + str(art[j]["Date"]) + ", Clasificación: " + str(art[j]["Classification"]) + ", Dimensiones: " + str(art[j]["Dimensions"]) + ", Medio: " + str(art[j]["Medium"]))
+        j+=1
 """
 Menu principal
 """
@@ -137,8 +153,10 @@ while True:
         print("Digite el rango de fechas en el que desea realizar la búsqueda (AAAA-MM-DD)")
         min = int(input("Fecha Inicial: ").replace("-",""))
         max = int(input("Fecha Final: ").replace("-",""))
-
+        start= time.process_time()
         gd = controller.getArtworksbyDate(catalog, min, max)
+        stop= time.process_time()
+        print("Tiempo: " + str((stop-start)))
 
         print_3(gd)
 
@@ -149,30 +167,27 @@ while True:
 
 
     elif int(inputs[0]) == 5:
-        
+        start= time.process_time()
         top = controller.top10byNacionality(catalog)
+        stop= time.process_time()
+        print("Tiempo: " + str((stop-start)))
+
         print_5(top)
 
     elif int(inputs[0]) == 6:
         pass
 
     elif int(inputs[0]) == 7:
-        pass
 
-    elif int(inputs[0]) == 3:
-        pass
+        min = input("Año inicial de las obras: ")
+        max = input("Año final de las obras: ")
+        area=float(input("Área disponible en m^2 para objetos planos: "))
+        start= time.process_time()
+        ar=controller.newExposition(catalog, min, max, area)
+        stop= time.process_time()
+        print("Tiempo: " + str((stop-start)))
 
-    elif int(inputs[0]) == 4:
-        pass
-
-    elif int(inputs[0]) == 5:
-        pass
-
-    elif int(inputs[0]) == 6:
-        pass
-
-    elif int(inputs[0]) == 7:
-        pass
+        print_7(ar)
 
     else:
         sys.exit(0)

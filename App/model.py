@@ -108,8 +108,16 @@ def purchase(gd):
     
 def top10byNacionality(catalog):
 
+    mg.sort(catalog["Artists"],cmpIDObject)
+    mg.sort(catalog["Artworks"],cmpIDObject)
     i=0
-    tamaño=lt.size(catalog["Artworks"])
+    tamaño1=lt.size(catalog["Artworks"])
+    tamaño2=lt.size(catalog["Artists"])
+    if tamaño1>tamaño2:
+        tamaño=tamaño2
+    else: 
+        tamaño=tamaño1
+    
     top10=lt.newList("ARRAY_LIST")
 
     while i < tamaño:
@@ -144,6 +152,32 @@ def top10byNacionality(catalog):
     
 
     return mayor,o,top10
+
+def newExposition(catalog, min, max, area):
+    
+    cat=catalog["Artworks"]["elements"]
+    sum=0
+    i=0
+    catalogDate=lt.newList("ARRAY_LIST")
+    for x in cat:
+        if x["Date"]>=(min) and x["Date"]<=(max):
+            lt.addLast(catalogDate, x)
+
+    catDate=catalogDate["elements"]
+    catalogArea=lt.newList("ARRAY_LIST")
+
+    while sum<(area*10000):
+        obr=0
+    
+        if catDate[i]['Height (cm)']!="" and catDate[i]['Width (cm)'] !="":
+
+            obr=float(catDate[i]['Height (cm)'])*float(catDate[i]['Width (cm)'])
+            
+            sum=sum+obr
+            lt.addLast(catalogArea,catDate[i])
+        i+=1
+        
+    return catalogArea,sum
     
     
 
@@ -162,6 +196,12 @@ def cmpO(a,b):
     else:
         return False
 
+def cmpIDObject(a,b):
+
+    if a["ConstituentID"]<b["ConstituentID"]:
+        return True
+    else:
+        return False
 # Funciones de ordenamiento
 
 
