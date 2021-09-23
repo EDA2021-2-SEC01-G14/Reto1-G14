@@ -45,7 +45,7 @@ def printMenu():
     print("4- Listar cronológicamente los artistas")
     print("5- Clasificar las obras de un artista por técnica")
     print("6- Clasificar las obras por la nacionalidad de sus creadores")
-    print("7- Costostransportar obras de un departamento")
+    print("7- Costos transportar obras de un departamento")
     print("8- Proponer una nueva exposición en el museo")
 
 catalog = None
@@ -76,10 +76,30 @@ def printArtworsMediums(list):
         print('La técnica mas utilizad es: ', list[2])
 
         for a in list[3]['elements']:
-            print('\nTitulo: '+a['Title'], 'Fecha de la obra: '+a['Date'], 'Tecnica o Medio: '+a['Medium'],'Diemensiones: '+ a['Dimensions'] )
+            print('\nTitulo: '+a['Title'], 'Fecha de la obra: '+a['Date'], 'Tecnica o Medio: '+a['Medium'],
+            'Diemensiones: '+ a['Dimensions'] )
 
  
+def printArtDepa(list):
 
+    print('\nEl departamento tiene un total de ',lt.size(list[0]), 'obras')
+
+    print('El costo por el servicio de transporte es de ',round(list[1]), 'USD')
+
+    print('Todas las obras tienen un peso estimado de' , round(list[2]), 'kg')
+    print('\n5 obras mas antiguas a transportar:')
+    for i in range(1,6):
+#'|Artista: '+a['Artist'],
+        a=lt.getElement(list[0],i)
+        print('\nTitulo: '+ a['Title'],  '|Clasificacion: '+ a['Classification'], '|Fecha: '+ a['Date'],
+         '|Medio: '+ a['Medium'], '|Dimensiones: '+ a['Dimensions'], '|Costo Transporte: '+ a['Cost'])
+    print('\n5 obras mas costosas a transportar:')
+    for i in range(1,6):
+#'|Artista: '+b['Artist'],
+        b=lt.getElement(list[3],i)
+        print('\nTitulo: '+ b['Title'],  '|Clasificacion: '+ b['Classification'], '|Fecha: '+ b['Date'],
+         '|Medio: '+ b['Medium'], '|Dimensiones: '+ b['Dimensions'], '|Costo Transporte: '+ b['Cost'])
+    
     
 
 """
@@ -140,22 +160,11 @@ while True:
 
 
     elif int(inputs[0]) == 6:
-        pass
+    
+        depa=input('Digite el nombre del departamento que desea costear: ')
+        list=controller.TransportCos(catalog,depa)
+        printArtDepa(list)
 
-    elif int(inputs[0]) == 7:
-        pass
-
-    elif int(inputs[0]) == 3:
-        pass
-
-    elif int(inputs[0]) == 4:
-        pass
-
-    elif int(inputs[0]) == 5:
-        pass
-
-    elif int(inputs[0]) == 6:
-        pass
 
     elif int(inputs[0]) == 7:
         pass
