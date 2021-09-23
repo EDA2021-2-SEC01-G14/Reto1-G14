@@ -46,12 +46,59 @@ def printMenu():
     print("3- Listar cronológicamente las adquisiciones ")
     print("4- Clasificar las obras de un artista por técnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
-    print("6- Costostransportar obras de un departamento")
+    print("6- Costos transportar obras de un departamento")
     print("7- Proponer una nueva exposición en el museo")
+    print("8- Salir")
 
 catalog = None
 
 
+###############
+
+def printArtistBegindate(list):
+    
+    print('El numero total de artistas en aquel rango es de: ', lt.size(list[0]))
+
+    for i in range(1,len(list)):
+        print(list[i])
+    
+def printArtworsMediums(list): 
+
+    if list == 0:
+        print('\nNo tiene obras')
+    else:
+        print('\nEl artista tiene',list[0], 'obras') 
+
+        print('Se usan', len(list[1]), 'técnicas en total')
+        print('La técnica mas utilizad es: ', list[2])
+
+        for a in list[3]['elements']:
+            print('\nTitulo: '+a['Title'], 'Fecha de la obra: '+a['Date'], 'Tecnica o Medio: '+a['Medium'],
+            'Diemensiones: '+ a['Dimensions'] )
+
+ 
+def printArtDepa(list):
+
+    print('\nEl departamento tiene un total de ',lt.size(list[0]), 'obras')
+
+    print('El costo por el servicio de transporte es de ',round(list[1]), 'USD')
+
+    print('Todas las obras tienen un peso estimado de' , round(list[2]), 'kg')
+    print('\n5 obras mas antiguas a transportar:')
+    for i in range(1,6):
+#'|Artista: '+a['Artist'],
+        a=lt.getElement(list[0],i)
+        print('\nTitulo: '+ a['Title'],  '|Clasificacion: '+ a['Classification'], '|Fecha: '+ a['Date'],
+         '|Medio: '+ a['Medium'], '|Dimensiones: '+ a['Dimensions'], '|Costo Transporte: '+ a['Cost'])
+    print('\n5 obras mas costosas a transportar:')
+    for i in range(1,6):
+#'|Artista: '+b['Artist'],
+        b=lt.getElement(list[3],i)
+        print('\nTitulo: '+ b['Title'],  '|Clasificacion: '+ b['Classification'], '|Fecha: '+ b['Date'],
+         '|Medio: '+ b['Medium'], '|Dimensiones: '+ b['Dimensions'], '|Costo Transporte: '+ b['Cost'])
+    
+
+##########
 def print_3(gd):
     tamaño=lt.size(gd)
     print("Número total de obras: " + str(tamaño))
@@ -123,7 +170,8 @@ def print_7(ar):
 """
 Menu principal
 """
-while True:
+x=True
+while x:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
@@ -139,13 +187,13 @@ while True:
 
     elif int(inputs[0]) == 2:
 
-        print("Seleccione el tipo de ordenamiento interactivo que desea realizar:\n")
-        print("1. Insertion\n")
-        print("2. Shell\n")
-        print("3. Merge\n")
-        print("4. Quick Sorts\n")
-
-        op = int(input("\n"))
+        print("Digite el rango de fechas en el que desea realizar la búsqueda (AAAA)")
+        min = int(input("Fecha Inicial: "))
+        max = int(input("Fecha Final: "))
+                
+        list=controller.getArtistBeginDate(catalog,min,max)
+        printArtistBegindate(list)
+        
         
 
     elif int(inputs[0]) == 3:
@@ -163,7 +211,10 @@ while True:
         
 
     elif int(inputs[0]) == 4:
-        pass
+        Name=input("El nombre del artista que desea buscar: ")
+        
+        list=controller.ArtworksbyArtist(catalog,Name)
+        printArtworsMediums(list)
 
 
     elif int(inputs[0]) == 5:
@@ -175,12 +226,14 @@ while True:
         print_5(top)
 
     elif int(inputs[0]) == 6:
-        pass
+        depa=input('Digite el nombre del departamento que desea costear: ')
+        list=controller.TransportCos(catalog,depa)
+        printArtDepa(list)
 
     elif int(inputs[0]) == 7:
 
-        min = input("Año inicial de las obras: ")
-        max = input("Año final de las obras: ")
+        min = input("Año inicial de las obras: (AAAA)")
+        max = input("Año final de las obras: (AAAA) ")
         area=float(input("Área disponible en m^2 para objetos planos: "))
         start= time.process_time()
         ar=controller.newExposition(catalog, min, max, area)
@@ -189,6 +242,8 @@ while True:
 
         print_7(ar)
 
+    elif int(inputs[0]) == 8:
+        x=False
     else:
         sys.exit(0)
 

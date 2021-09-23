@@ -28,6 +28,7 @@ from DISClib.DataStructures.arraylist import newList
 import config as cf
 import time
 import sys
+import copy
 default_limit=1000
 sys.setrecursionlimit(default_limit*10)
 from DISClib.ADT import list as lt
@@ -76,6 +77,49 @@ def addArtwork(catalog, artwork):
 
 # Funciones de consulta
 
+
+#REQU 1
+
+def getArtistBeginDate(catalog, min, max,):
+
+    start = time.process_time_ns()
+
+    list= catalog['Artists'].copy()
+    a=lt.newList("ARRAY_LIST")
+    
+    for artist in list['elements']:
+        
+        date= int(artist['BeginDate'].replace('-',''))
+        
+        if date >= min and date <= max:
+            lt.addLast(a,artist)
+
+    mg.sort(a, cmpArtistBegindate)
+
+
+    a1= lt.getElement(a,1)
+    a1= 'Nombre: '+ a1['DisplayName'] ,'Año de Nacimiento: '+ a1['BeginDate'],'Genero: '+ a1['Gender'], 'Nacionalidad: '+ a1['Nationality']
+    a2= lt.getElement(a,2)
+    a2= 'Nombre: '+ a2['DisplayName'], 'Año de Nacimiento: '+a2['BeginDate'],'Genero: '+ a2['Gender'], 'Nacionalidad: '+ a2['Nationality']
+    a3= lt.getElement(a,3)
+    a3= 'Nombre: '+a3['DisplayName'], 'Año de Nacimiento: '+a3['BeginDate'],'Genero: '+ a3['Gender'], 'Nacionalidad: '+a3['Nationality']
+    a4= lt.getElement(a,(lt.size(a) - 2))
+    a4= 'Nombre: '+a4['DisplayName'], 'Año de Nacimiento: '+a4['BeginDate'],'Genero: '+ a4['Gender'], 'Nacionalidad: '+ a4['Nationality']
+    a5= lt.getElement(a,(lt.size(a) - 1))
+    a5= 'Nombre: '+a5['DisplayName'], 'Año de Nacimiento: '+a5['BeginDate'],'Genero: '+ a5['Gender'], 'Nacionalidad: '+ a5['Nationality']
+    a6= lt.getElement(a,lt.size(a))
+    a6= 'Nombre: '+a6['DisplayName'], 'Año de Nacimiento: '+a6['BeginDate'],'Genero: '+ a6['Gender'], 'Nacionalidad: '+ a6['Nationality']
+
+    stop = time.process_time_ns()
+
+    sgs = (stop-start)/1000000000
+    print(sgs)
+    return [a,a1,a2,a3,a4,a5,a6]
+
+###################
+
+
+#REQ 2
 def getArtworksbyDate(catalog, min, max):
 
     a= catalog["Artworks"]
@@ -105,7 +149,104 @@ def purchase(gd):
             count += 1
 
     return count
+###################
+
+
+#REQU 3
+
+def ArtworksbyArtist(catalog,ArtistName):
+
+    start = time.process_time_ns()
+
+    listA = catalog['Artists'].copy()
+    ArtistID=''
+    x=True
+    pos=1
+    while x: 
+
+        artist= lt.getElement(listA,pos)
+        if ArtistName in artist['DisplayName']:
+            ArtistID= artist["ConstituentID"]
+            x=False
+
+        pos+=1
+
     
+
+    listW = catalog['Artworks'].copy()
+    a=lt.newList("ARRAY_LIST")
+    
+    for artworks in listW['elements']:
+        
+        if ArtistID in artworks['ConstituentID']:
+            lt.addLast(a,artworks)
+
+
+    mg.sort(a,cmpArtworkMedium)
+
+    n_artworks = lt.size(a)
+
+
+    if n_artworks ==0: 
+
+        stop = time.process_time_ns()
+
+        sgs = (stop-start)/1000000000
+        print(sgs)
+        return 0
+
+        
+    else:
+        
+
+        rta=[n_artworks] + ArtwroksMedium(a)
+
+        stop = time.process_time_ns()
+
+        sgs = (stop-start)/1000000000
+        print(sgs)  
+
+        return rta
+
+
+
+def ArtwroksMedium(list):
+    
+
+    Mediums=[lt.getElement(list,1)['Medium']]
+    biggest=0
+    big_M =lt.getElement(list,1)['Medium']
+    count=0
+
+    for artwork in list['elements']:
+
+        if artwork['Medium'] in Mediums: 
+            count+=1
+
+        else: 
+            Mediums.append(artwork['Medium'])
+
+            if biggest > count:
+                biggest = count
+                big_M = artwork['Medium']
+
+    return [Mediums, big_M , Artwork_big_M(list,big_M)]
+
+def Artwork_big_M(list,big_M):
+
+    a=lt.newList("ARRAY_LIST")
+
+    for artwork in list['elements']:
+        if artwork['Medium'] == big_M:
+
+            lt.addLast(a,artwork)
+
+    return a
+
+###################
+
+
+#REQ 4 
 def top10byNacionality(catalog):
 
     mg.sort(catalog["Artists"],cmpIDObject)
@@ -152,7 +293,90 @@ def top10byNacionality(catalog):
     
 
     return mayor,o,top10
+###################
 
+
+#REQ 5
+
+def TransportCos(catalog,depa):
+    start = time.process_time_ns()
+
+    listD = ArtbyDepartment(catalog,depa)
+    
+    Cost=0
+    Weight=0
+    
+    for artwork in listD['elements']:
+        costA=48
+        Costs=[]
+        
+        if artwork['Weight (kg)'] != '':
+            costW = float(artwork['Weight (kg)']) * 35
+            Weight += float(artwork['Weight (kg)'])
+        else:
+            costW=0
+        Costs.append(costW)
+
+        if artwork['Height (cm)'] != '' and artwork['Width (cm)'] != '':
+            costm_2 = float(artwork['Height (cm)']) * float(artwork['Width (cm)']) * 35
+        else:
+            costm_2=0
+        Costs.append(costm_2)
+
+        if artwork['Height (cm)'] != '' and artwork['Width (cm)'] != '' and artwork['Depth (cm)'] != '':
+            costm_3 = float(artwork['Height (cm)'])/100 * float(artwork['Width (cm)'])/100 * float(artwork['Depth (cm)'] )/100 *35
+        else:
+            costm_3=0
+        Costs.append(costm_3)
+
+        if max(Costs) != 0:
+         
+            Cost += max(Costs)
+            artwork['Cost']=str(round(max(Costs),2)) +' USD'
+        else:
+            Cost += costA
+            artwork['Cost']=str(round(costA,2)) + ' USD'
+
+    #Artworks_Artist(listD,catalog['Artists'])    
+
+    mg.sort(listD,cmpArtworkDate)
+    expensive = copy.deepcopy(listD)
+    mg.sort(expensive,cmpArtworkCost)
+
+    stop = time.process_time_ns()
+
+    sgs = (stop-start)/1000000000
+    print(sgs) 
+
+    return [listD ,Cost , Weight, expensive]
+
+def ArtbyDepartment(catalog,depa):
+
+
+    listA = catalog['Artworks']
+    a=lt.newList("ARRAY_LIST")
+
+    for artwork in listA['elements']:
+        if artwork['Department'] == depa:
+
+            lt.addLast(a,artwork)
+
+    return a
+
+
+def Artworks_Artist(listW,listA):
+
+    for artwork in listW['elements']:
+        artwork['Artist']=''
+
+        for artist in listA['elements']:
+            if artist['ConstituentID'] in artwork['ConstituentID']:
+                artwork['Artist']= artist['DisplayName']
+
+###################
+
+
+#REQ 6
 def newExposition(catalog, min, max, area):
     
     cat=catalog["Artworks"]["elements"]
@@ -178,7 +402,7 @@ def newExposition(catalog, min, max, area):
         i+=1
         
     return catalogArea,sum
-    
+###################
     
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -202,6 +426,44 @@ def cmpIDObject(a,b):
         return True
     else:
         return False
+
+#########################
+
+def cmpArtistBegindate(artist1, artist2):
+
+    if (artist1["BeginDate"]) < (artist2["BeginDate"]):
+        return True
+    else:
+        return False
+
+def cmpArtworkMedium(artwork1, artwork2):
+    if (artwork1["Medium"]) < (artwork2["Medium"]):
+        return True
+    else:
+        return False
+
+def cmpArtworkDate(artwork1, artwork2):
+
+    if artwork1["Date"] == '':
+        artwork1["Date"]='No se sabe'
+    if artwork2["Date"] == '':
+        artwork2["Date"]='No se sabe'
+
+    if (artwork1["Date"]) < (artwork2["Date"]):
+        return True
+    else:
+        return False
+
+def cmpArtworkCost(artwork1, artwork2):
+    if (artwork1["Cost"]) > (artwork2["Cost"]):
+        return True
+    else:
+        return False
+
+
+
+
+
 # Funciones de ordenamiento
 
 
