@@ -232,8 +232,8 @@ while x:
 
     elif int(inputs[0]) == 7:
 
-        min = input("Año inicial de las obras: (AAAA)")
-        max = input("Año final de las obras: (AAAA) ")
+        min = input("Año inicial de las obras (AAAA): ")
+        max = input("Año final de las obras (AAAA): ")
         area=float(input("Área disponible en m^2 para objetos planos: "))
         start= time.process_time()
         ar=controller.newExposition(catalog, min, max, area)
